@@ -14,8 +14,8 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  private async getAccessToken(uid: string) {
-    return await this.jwtService.signAsync({ sub: uid });
+  private async getAccessToken(uid: string, role: string) {
+    return await this.jwtService.signAsync({ sub: uid, role });
   }
 
   private async getRefreshToken(uid: string) {
@@ -30,7 +30,7 @@ export class AuthService {
     const isMatch = await bcrypt.compare(dto.password, user.password);
     if (isMatch) {
       return {
-        access_token: await this.getAccessToken(user.id),
+        access_token: await this.getAccessToken(user.id, user.role),
         refresh_token: await this.getRefreshToken(user.id),
       };
     }
@@ -45,7 +45,7 @@ export class AuthService {
 
     const user = await this.userService.create(dto);
     return {
-      access_token: await this.getAccessToken(user.id),
+      access_token: await this.getAccessToken(user.id, user.role),
       refresh_token: await this.getRefreshToken(user.id),
     };
   }

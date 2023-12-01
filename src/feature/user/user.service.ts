@@ -8,7 +8,7 @@ export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
   create(createUserDto: CreateUserDto) {
-    return this.userRepository.save(createUserDto);
+    return this.userRepository.save(CreateUserDto.toEntity(createUserDto));
   }
 
   findAll(keyword?: string) {
