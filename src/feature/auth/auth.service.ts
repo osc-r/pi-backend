@@ -4,6 +4,7 @@ import { SignupDto } from './dto/signup.dto';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -26,7 +27,8 @@ export class AuthService {
 
   async signin(dto: SigninDto) {
     const user = await this.userService.findOneByEmail(dto.email);
-    if (user.password === dto.password) {
+    const isMatch = await bcrypt.compare(dto.password, user.password);
+    if (isMatch) {
       return {
         access_token: await this.getAccessToken(user.id),
         refresh_token: await this.getRefreshToken(user.id),
@@ -36,6 +38,11 @@ export class AuthService {
   }
 
   async signup(dto: SignupDto) {
+    const salt = await bcrypt.genSalt();
+    const password = dto.password;
+    const hashPassword = await bcrypt.hash(password, salt);
+    dto.password = hashPassword;
+
     const user = await this.userService.create(dto);
     return {
       access_token: await this.getAccessToken(user.id),

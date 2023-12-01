@@ -20,4 +20,9 @@ export class User extends BaseEntity {
 
   @Column({ name: 'date_of_birth', nullable: true })
   dateOfBirth?: Date;
+
+  toJSON() {
+    delete this.password;
+    return this;
+  }
 }
