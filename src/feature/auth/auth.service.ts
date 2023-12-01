@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { SigninDto } from './dto/signin.dto';
 import { SignupDto } from './dto/signup.dto';
 import { UserService } from '../user/user.service';
@@ -34,7 +34,7 @@ export class AuthService {
         refresh_token: await this.getRefreshToken(user.id),
       };
     }
-    return false;
+    throw new BadRequestException('email or password mismatch');
   }
 
   async signup(dto: SignupDto) {
