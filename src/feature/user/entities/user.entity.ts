@@ -1,4 +1,4 @@
-import { BaseEntity } from 'src/common/base.entity';
+import { BaseEntity } from '../../../common/base.entity';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum UserRole {
@@ -20,7 +20,7 @@ export class User extends BaseEntity {
   @Column({
     enum: [UserRole.ADMIN, UserRole.USER],
     default: UserRole.USER,
-    type: 'enum',
+    type: 'simple-enum',
   })
   role: UserRole;
 
