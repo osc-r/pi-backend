@@ -29,4 +29,21 @@ export class UserRepository extends Repository<User> {
     }
     return user;
   }
+
+  findAllByKeyword(keyword?: string) {
+    keyword = keyword ? `%${keyword}%` : null;
+    const checkNull = `cast(:keyword as varchar) IS NULL`;
+
+    const q = this.createQueryBuilder('user')
+      .where(`${checkNull} OR user.email LIKE :keyword`, {
+        keyword: keyword,
+      })
+      .orWhere(`${checkNull} OR user.firstname LIKE :keyword`, {
+        keyword: keyword,
+      })
+      .orWhere(`${checkNull} OR user.lastname LIKE :keyword`, {
+        keyword: keyword,
+      });
+    return q.getMany();
+  }
 }

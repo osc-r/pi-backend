@@ -11,8 +11,8 @@ export class UserService {
     return this.userRepository.save(createUserDto);
   }
 
-  findAll() {
-    return this.userRepository.find();
+  findAll(keyword?: string) {
+    return this.userRepository.findAllByKeyword(keyword);
   }
 
   findOneById(id: string) {

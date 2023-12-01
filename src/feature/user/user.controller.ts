@@ -1,8 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @Controller('user')
 @ApiTags('user')
@@ -16,8 +25,13 @@ export class UserController {
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  @ApiQuery({
+    name: 'keyword',
+    required: false,
+    description: `Search user's email, firstname, lastname`,
+  })
+  findAll(@Query('keyword') keyword?: string) {
+    return this.userService.findAll(keyword);
   }
 
   @Get(':id')
