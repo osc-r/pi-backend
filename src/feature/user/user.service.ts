@@ -12,24 +12,24 @@ export class UserService {
   }
 
   findAll() {
-    return this.userRepository.find()
+    return this.userRepository.find();
   }
 
-  async findOne(id: string) {
-    const user = await this.userRepository.findOne({
-      where: { id },
-      withDeleted: false,
-    });
-    return user;
+  findOneById(id: string) {
+    return this.userRepository.findOneById(id);
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    const user = await this.findOne(id);
+    const user = await this.findOneById(id);
     await this.userRepository.update({ id: user.id }, updateUserDto);
     return updateUserDto;
   }
 
   remove(id: string) {
     return this.userRepository.softRemove({ id });
+  }
+
+  findOneByEmail(email: string) {
+    return this.userRepository.findOneByEmail(email);
   }
 }
