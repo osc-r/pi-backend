@@ -12,9 +12,9 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { Roles } from 'src/decorator/roles.decorator';
+import { Roles } from '../../decorator/roles.decorator';
 import { UserRole } from './entities/user.entity';
-import { CurrentUser } from 'src/decorator/current-user.decorator';
+import { CurrentUser } from '../../decorator/current-user.decorator';
 
 @Controller('user')
 @ApiTags('user (Available for Admin role)')
