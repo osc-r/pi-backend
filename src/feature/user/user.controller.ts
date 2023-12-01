@@ -17,18 +17,20 @@ import { UserRole } from './entities/user.entity';
 import { CurrentUser } from 'src/decorator/current-user.decorator';
 
 @Controller('user')
-@ApiTags('user')
+@ApiTags('user (Available for Admin role)')
 @ApiBearerAuth()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('/me')
+  @ApiTags('user (Available for User role)')
   @Roles([UserRole.ADMIN, UserRole.USER])
   findOneByCurrentUser(@CurrentUser() user: CurrentUser) {
     return this.userService.findOneById(user.id);
   }
 
   @Patch('/me')
+  @ApiTags('user (Available for User role)')
   @Roles([UserRole.ADMIN, UserRole.USER])
   updateByCurrentUser(
     @CurrentUser() user: CurrentUser,
