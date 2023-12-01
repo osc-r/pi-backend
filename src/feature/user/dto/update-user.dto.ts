@@ -1,15 +1,7 @@
-import { IsDateString, IsNotEmpty, IsOptional } from 'class-validator';
+import { OmitType } from '@nestjs/mapped-types';
+import { CreateUserDto } from './create-user.dto';
 
-export class UpdateUserDto {
-  @IsNotEmpty()
-  @IsOptional()
-  firstname?: string;
-
-  @IsNotEmpty()
-  @IsOptional()
-  lastname?: string;
-
-  @IsDateString()
-  @IsOptional()
-  dateOfBirth?: Date;
-}
+export class UpdateUserDto extends OmitType(CreateUserDto, [
+  'email',
+  'password',
+]) {}
